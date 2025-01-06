@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// todo data class
 class Todo {
   final String id;
   final String title;
@@ -19,6 +20,7 @@ class Todo {
   }
 }
 
+// data localStorage logic
 class TodoStorage {
   static const String _key = 'todos';
 

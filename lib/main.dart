@@ -15,7 +15,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Todo App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.teal,
+        ).copyWith(primary: Colors.teal, secondary: Colors.deepPurple.shade300),
         useMaterial3: true,
         // scaffoldBackgroundColor: Colors.amber,
       ),

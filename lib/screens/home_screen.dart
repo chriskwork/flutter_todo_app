@@ -70,11 +70,16 @@ class _HomeScreenState extends State<HomeScreen> {
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('Cancel'),
+              child: Text('Cancel'.toUpperCase()),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(input),
-              child: Text('Add'),
+              onPressed: () => Navigator.of(context).pop(input.trim()),
+              child: Text(
+                'Add'.toUpperCase(),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+              ),
             ),
           ],
         );
@@ -86,36 +91,53 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: const Text('Todo App'),
+        title: const Text('Simple Todo App'),
         centerTitle: true,
         titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-        backgroundColor: Colors.teal.shade100,
+        backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: ListView.builder(
-        itemCount: todos.length,
-        itemBuilder: (context, index) {
-          final todo = todos[index];
-          return ListTile(
-            title: Text(
-              todo.title,
-              style: TextStyle(
-                decoration: todo.isDone ? TextDecoration.lineThrough : null,
-              ),
-            ),
-            leading: Checkbox(
-              value: todo.isDone,
-              onChanged: (_) => _toggleTodo(todo.id),
-            ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => _deleteTodo(todo.id),
-            ),
-          );
-        },
+      body: Center(
+        child: Container(
+          width: 500,
+          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          child: ListView.builder(
+            itemCount: todos.length,
+            itemBuilder: (context, index) {
+              final todo = todos[index];
+              return GestureDetector(
+                onHorizontalDragEnd: (details) {
+                  if (details.primaryVelocity! < 0) {
+                    _deleteTodo(todo.id);
+                  }
+                },
+                child: ListTile(
+                  title: Text(
+                    todo.title,
+                    style: TextStyle(
+                      decoration:
+                          todo.isDone ? TextDecoration.lineThrough : null,
+                    ),
+                  ),
+                  leading: Checkbox(
+                    value: todo.isDone,
+                    onChanged: (_) => _toggleTodo(todo.id),
+                  ),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.black26),
+                    onPressed: () => _deleteTodo(todo.id),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
       ),
 
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Theme.of(context).colorScheme.onSecondary,
         child: Icon(Icons.add),
         onPressed: () async {
           // new todo dialog, create todo as input value
